@@ -1,0 +1,254 @@
+---
+title: "practical 5"
+author: "Harshal Maratthe"
+date: "2023-09-15"
+output: word_document
+---
+
+```{r}
+#install.packages("ggplot2")
+#install.packages("plotly")
+library("ggplot2")
+library("plotly")
+#install.packages("webshot2")
+```
+#Q1
+```{r}
+#View(iris)
+#Q1Use the iris dataset to create a scatter plot between Sepal.Length and Sepal.Width
+
+#ggplot()
+ggplot(data=iris)+
+  geom_point(mapping=aes(x=Sepal.Length,y=Sepal.Width))+
+  labs(title = "Scatter Plot betwn Sepal length and sepal width",x="Sepal Length",y="Sepal Width")
+#or
+ggplot(data=iris,mapping=aes(x=Sepal.Length,y=Sepal.Width))+
+  geom_point()
+#or
+ggplot(data=iris,aes(x=Sepal.Length,y=Sepal.Width))+
+  geom_point()
+
+#plotly()
+plot_ly(data=iris,x=~Sepal.Length,y=~Sepal.Width,type="scatter",mode="markers",color = ~Species)%>% layout(title="Scatter Plot betwn Sepal length and sepal width",xaxis=list(title="Sepal Length"),yaxis=list(title="Sepal Width"))
+```
+#Q2
+```{r}
+#Q2Create a bar chart using the diamonds dataset, displaying the cut variable with respect to clarity.
+
+#View(diamonds)
+ggplot(data=diamonds)+
+  geom_bar(mapping=aes(x=cut,fill=clarity))+
+  labs(title = "Bar chart of cut variable w.r.t clarity",x="Cut",y="Clarity")
+ggplot(data=diamonds,aes(x=cut,fill=clarity))+
+  geom_bar(position="dodge")
+plot_ly(data=diamonds,x=~cut,y=~clarity,type="bar",color = ~clarity)%>% layout(title="Bar chart of cut variable w.r.t clarity",xaxis=list(title="Cut"),yaxis=list(title="Clarity"))
+```
+#Q3
+
+
+```{r}
+#Q3Generate a line chart using the economics dataset to visualize the relationship between the date variable and the unemploy variable
+#View(economics)
+ggplot(data=economics)+
+  geom_line(mapping=aes(x=date,y=unemploy))+
+  labs(title = "line chart betwn date and unemploy",x="Date",y="Unemployment")
+
+plot_ly(data=economics,x=~date,y=~unemploy,type="scatter",mode="line") %>% layout(title="line chart betwn date and unemploy",xaxis=list(title="Date"),yaxis=list(title="Unemployment"))
+```
+#Q4 = = 
+```{r}
+#Q4Produce a box plot using the mpg dataset to show the distribution of the hwy variable across different vehicle classes (class)
+#View(mpg)
+ggplot(data=mpg)+
+  geom_boxplot(mapping = aes(x=reorder(class,hwy,FUN=median),y=hwy))+
+  labs(title = "Boxplot of hwy variable across different classes",x="Classes of vehicle",y="highway per gallon")
+
+
+plot_ly(data=mpg,x=~class,y=~hwy,type="box",color=~class) %>% layout(title="Boxplot of hwy variable across different classes",xaxis=list(title="Classes of vehicle"),yaxis=list(title="highway per gallon"))
+```
+
+#Q5
+```{r}
+#Q5Use the mtcars dataset to create a histogram of mpg values.
+View(mtcars)
+ggplot(data=mtcars)+
+  geom_histogram(mapping = aes(mpg),binwidth = 5)+
+  labs(title = "Histogram of mpg variable",x="miles per gallon",y="frequency")
+
+plot_ly(data=mtcars,x=~mpg,type = "histogram",color = I("black")) %>% layout(title="Histogram of mpg variable",xaxis=list(title="Miles per Gallon"),yaxis=list(title="Frequency"))
+
+#OR
+
+plot_ly(data=mtcars,x=~mpg,type = "histogram",marker =list(color=c("RED","BLACK","PINK","BLUE","GREY"),size=5))%>% layout(title="Histogram of mpg variable",xaxis=list(title="Miles per Gallon"),yaxis=list(title="Frequency"))
+```
+#Q6
+```{r}
+#Q6Using the ChickWeight dataset, draw a line chart to show the weight gain over time for a specific diet.
+
+#View(ChickWeight)
+ggplot(data=ChickWeight)+
+  geom_line(mapping=aes(x=Time,y=weight,color=Diet))+
+   labs(title = "line chart for weight gain over time for a speciō`.fic diet",x="Time",y="Weight")
+plot_ly(data=ChickWeight,x=~Time,y=~weight,type="scatter",mode="lines",color=~Diet) %>% layout(title="line chart for weight gain over time for a specific diet",xaxis=list(title="Time",yaxis=list(title="Weight")))
+```
+#Q7
+```{r}
+#Q7Create a scatter plot with the faithful dataset to visualize the relationship between eruptions duration and waiting time.
+#View(faithful)
+ggplot(data=faithful)+
+  geom_point(mapping = aes(x=eruptions,y=waiting))+
+   labs(title = "Scatter plot for relation betw eruptions and waiting time",x="Time",y="Weight")
+
+
+plot_ly(data=faithful,x=~eruptions,y=~waiting,type="scatter",mode="markers") %>% layout(title="Scatter plot for relation betw eruptions and waiting time",xaxis=list(title="Eruptions"),yaxis=list(title="waiting"))
+
+
+```
+#Q8
+```{r}
+#Q8Generate a bar chart using the Titanic dataset to show the count of passengers by class (Class).
+#View(Titanic)
+
+ggplot(data=as.data.frame(Titanic))+
+  geom_col(mapping = aes(x=Class,y=Freq))+
+  labs(title = "count of passengers",x="Class",y="passenger count")
+
+plot_ly(data=as.data.frame(Titanic),x=~Class,y=~Freq,type="bar",color=~Class)%>% layout(title="Class wise count",xaxis=list(title="Class"),yaxis=list(title="Counts"))
+```
+#Q9
+```{r}
+#Q9 Use the USArrests dataset to create a box plot of the murder rate (Murder) .
+#View(USArrests)
+ggplot(data=USArrests)+
+  geom_boxplot(mapping=aes(x=Murder))+
+  labs(title = "Boxplot of Murder",x="Murder")
+
+plot_ly(data=USArrests,x=~Murder,type="box")%>% layout(title="Boxplot of Murder",xaxis=list(title="Murder"))
+```
+#Q10
+```{r}
+#Q10Create a density plot using the diamonds dataset to visualize the distribution of diamond prices (price) by diamond cut (cut).
+
+View(diamonds)
+fit <- density(diamonds$price)
+ggplot(data=diamonds)+
+  geom_density(mapping = aes(x=price,fill=cut),alpha=0.1)+
+  labs(title="density plot of price by cut",x="Price",y="Cut")
+
+plot_ly(data=diamonds,x=~price,y=~cut,type = "histogram") %>% add_trace(x=fit$price,y=fit$cut,mode="lines",fill="tozeroy")%>% layout(yaxis2 = list(overlaying = "y", side = "right"))
+
+#plot_ly(x = x, type = "histogram", name = "Histogram") %>% add_trace(x = fit$x, y = fit$y, mode = "lines", fill = "tozeroy", yaxis = "y2", name = "Density")
+```
+#11
+```{r}
+View(mtcars)
+ggplot(data=mtcars)+
+  geom_bar(mapping=aes(x=factor(cyl),fill=rownames(mtcars)))+
+  labs(title = "stacked bar graph",x="model")
+#or
+ggplot(data=mtcars)+
+  geom_bar(mapping=aes(x=factor(cyl)))
+
+plot_ly(data=mtcars,x=~factor(cyl),type="bar")
+plot_ly(data=mtcars,x = ~factor(cyl),y=~row.names(mtcars), type = 'bar')
+```
+
+#12
+```{r}
+View(volcano)
+fig <- plot_ly(as.data.frame(volcano), x = ~V1, y = ~V2,z=~V3, colors = c('#BF382A', '#0C4B8E'))
+```
+#13
+```{r}
+View(ChickWeight)
+ggplot(data=ChickWeight)+
+  geom_violin(mapping=aes(x=Diet,y=weight,fill=Diet))+
+  labs(title = "Violin plot of Weight dained by Diet type",x="Diet Type",y="Weight")
+
+plot_ly(data=ChickWeight,x=~Diet,y=~weight,type='violin',box=list(visible=TRUE)) %>% 
+  layout(title="Violin plot of Weight dained by Diet",xaxis=list(title="Diet Type"),yaxis=list(title="Weight"))
+```
+#Q14
+```{r}
+View(CO2)
+ggplot(data=CO2)+
+  geom_line(mapping=aes(x=uptake,y=conc))+
+  labs(title="Time series plot of conc vs uptake",x="uptake",y="concentration")
+plot_ly(data=CO2,x=~uptake,y=~conc,type="scatter",color=~Plant,mode='lines')
+```
+
+```{r}
+#Q15
+x <- seq(-2*pi,2*pi,length.out=200)
+y<- seq(-2*pi,2*pi,length.out=200)
+f_ <- function(x,y){
+  sin(x)*cos(y)
+}
+f_(x,y)
+z <- outer(x,y,FUN=f_)
+#or
+z <- outer(x,y,FUN=function(x,y)sin(x)*cos(y))
+z
+persp(x,y,z)
+
+#3d plot using plotly package
+library(plotly)
+plot_ly(x=~x,y=~y,z=~z,type="surface")
+
+##f(x,y)=1/2*pi*exp^(-1/2*(x^2+y^2))
+x <- seq(-3,3,length.out=200)
+y <- seq(-3,3,length.out=200)
+z <- outer(x,y,FUN=function(x,y) (1/2*pi)*exp(-1/2*(x^2+y^2)))
+persp(x,y,z,theta=45)
+
+#using plotly package
+plot_ly(x=~x,y=~y,z=~z,type="surface")
+```
+```{r}
+#Q16
+#install.packages("PASWR2")
+library(PASWR2)
+data(EPIDURALF)
+#View(EPIDURALF)
+levels(EPIDURALF$ease)
+#install.packages("vcd")
+library(vcd) # load vcd package
+mosaic(~doctor, data = EPIDURALF)
+mosaic(~doctor + ease, data = EPIDURALF)
+mosaic(~doctor + ease, data = EPIDURALF,
+highlighting_fill = c("gray80","gray50",
+"gray20"), highlighting = "ease")
+mosaic(~doctor + ease + treatment, data = EPIDURALF,
+highlighting_fill = c("gray80","gray50",
+"gray20"), highlighting = "ease")
+
+
+```
+
+
+```{r}
+#Q17
+# create BMI variable
+library(lattice)
+histogram(~BMI|treatment,data = EPIDURALF, layout = c(1, 2))
+bwplot(treatment ~ BMI | doctor, data =EPIDURALF, as.table = TRUE)
+stripplot(treatment ~ BMI | doctor, jitter =TRUE, data = EPIDURALF,as.table = TRUE)
+```
+
+```{r}
+graph1=histogram(~BMI, data = EPIDURAL)
+graph2=xyplot(cm ~ kg|doctor, data = EPIDURAL,
+as.table = TRUE)
+graph3=densityplot(~BMI|treatment, data =
+EPIDURAL, as.table = TRUE)
+graph4=bwplot(~BMI|doctor, data = EPIDURAL,
+as.table = TRUE)
+print(graph1, split=c(1, 2, 2, 2), more = TRUE)
+# Lower left
+print(graph2, split=c(2, 2, 2, 2), more = TRUE)
+# Lower right
+print(graph3, split=c(1, 1, 2, 2), more = TRUE)
+# Upper left
+print(graph4, split=c(2, 1, 2, 2), more =
+FALSE) # Upper right
+```

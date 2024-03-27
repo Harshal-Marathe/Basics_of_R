@@ -1,0 +1,183 @@
+---
+title: "Practical 7"
+author: "Harshal Maratthe"
+date: "2023-10-06"
+output: word_document
+---
+
+```{r}
+rm=(list=ls())
+#for loop
+factorial_ <- function(n){
+          factorial <- 1
+          for( i in 1:n)
+          factorial <- factorial * i
+           return (factorial)
+}
+factorial_(5)
+
+#while loop
+
+fac <- function(n){
+  factorial <- 1
+  while(n >1 ){
+    factorial <- factorial * n
+    n <- n - 1
+  }
+  return(factorial)
+}
+fac(3)
+
+#ifelse
+
+fac_1 <- function(m){
+  if(m==0)
+  {
+    return(1)}
+  else{prod(1:m)}
+}
+fac_1(4)
+
+#corelation corfficient function
+t <- c(10,8,14,6,4,2)
+s <- c(18,12,16,15,20,10)
+correlation <- function(x,y){
+  num <- sum((x-mean(x))*(y-mean(y)))
+  deno1 <- sum((x-mean(x))^2)
+  deno2 <- sum((y-mean(y))^2)
+  corr_corff <- num/sqrt(deno1*deno2)
+  return(corr_corff)
+}
+correlation(t,s)
+#quadratic equations
+
+quadraticRoots <- function(a, b, c) {
+ 
+  sq_qt <- (b^2) - (4*a*c)
+  
+  if(sq_qt>=0) {
+    x1 <- (-b + sqrt(sq_qt)) / (2*a)
+    x2 <- (-b - sqrt(sq_qt)) / (2*a)
+    solution <- c(x1,x2)
+  }
+  else{return(paste0("This quadratic equation has no real numbered roots."))
+  }
+  return(solution)
+  
+}
+quadraticRoots(2,5,1)
+
+
+```
+
+```{r}
+
+#Q2
+set.seed(1234)
+mu=2.5;sigma <- 1.2
+n <- c(5,15,25)
+mean_x_bar=numeric(0);var_sam_mean=numeric(0)
+for(i in 1:length(n))
+{
+  x <- matrix(rnorm(5000*n[i],mu,sigma),5000,n[i])
+  sample_mean <- apply(x,1,mean)
+  sample_var <- apply(x,1, var)
+  mean_x_bar [i] <- mean(sample_mean)
+  var_sam_mean[i] <- var(sample_mean)
+}
+cbind(n,mean_x_bar,var_sam_mean)
+hist(sample_mean)
+```
+
+```{r}
+
+#Q3
+#i)
+library(purrr)
+n <- c(1,2,3,4,5,6,7,8,9)
+map(n,~.x^2)
+map_dbl(n,~.x^2) 
+
+#ii)
+library(tidyverse)
+df <- tibble(
+  a=rnorm(10),
+  b=rnorm(10),
+  c=rnorm(10),
+  d=rnorm(10)
+)
+map_dbl(df,mean)
+df %>% map_dbl(sd)
+df %>% map(median)
+#iii)
+map_dbl(mtcars,~mean(.x))
+
+#iv)
+mu <- c(-10,0,10,100)
+map(mu,~rnorm(10,mean=.x))
+#or
+mu %>% map(rnorm,n=10)
+#v)
+x <- c(1,2,3,4,5,6,7,8,9)
+y <- c(9,8,7,6,5,4,3,2,1)
+map2(x,y,~.x+.y)
+
+#vi)
+mu <- c(5,10,-3)
+sigma <- c(1,5,10)
+map2(mu,sigma,~rnorm(10,mean=.x,sd=.y))
+#or
+map2(mu,sigma,rnorm,n=10)
+
+#vii)
+parm <- tribble(
+  ~mean,~sd,~n,
+  5,1,1,
+  10,5,3,
+  -3,10,5
+)
+parm %>% pmap(rnorm)
+```
+
+```{r}
+#Q4
+
+data(mtcars)
+head(mtcars)
+summary(mtcars)
+
+fivenum(mtcars$mpg)
+
+install.packages("psych")
+library(psych)
+describe(mtcars)
+
+mean(mtcars$mpg)
+var(mtcars$disp)
+sd(mtcars$drat)
+quantile(mtcars$mpg,prob=c(0.25,0.5,0.75))
+max(mtcars$wt)
+min(mtcars$drat)
+#Inter Quartile Range
+IQR(mtcars$vs)
+
+
+```
+```{r}
+library(broom)
+#Q5
+#to fit the model
+model <- lm(mpg~wt+cyl,data=mtcars)
+model
+summary(model)
+#tidy()
+tidy(model)
+tidy(model)$p.value
+#glance()
+glance(model)
+#augment()
+augment(model)
+```
+
+
+

@@ -1,0 +1,23 @@
+---
+title: "importing files"
+author: "Harshal Maratthe"
+date: "2023-10-06"
+output: word_document
+---
+
+```{r}
+data_1 <- read.table("C:\\Users\\marat\\OneDrive\\Desktop\\FY MSC SEm 1\\MST 506\\RDK\\dataset\\data1.txt")
+View(data_1)
+
+install.packages("readxl")
+library(readxl)
+data_2 <- read_xlsx("C:\\Users\\marat\\OneDrive\\Desktop\\FY MSC SEm 1\\MST 506\\RDK\\dataset\\data_health.xlsx")
+data_4 <- read_xlsx("C:\\Users\\marat\\OneDrive\\Desktop\\FY MSC SEm 1\\MST 506\\RDK\\dataset\\data_health.xlsx")
+data_4
+d_3 <- read.table("clipboard",header = T)
+d_3
+install.packages("writexl")
+library(writexl)
+write_xlsx(mtcars,"C:\\Users\\marat\\OneDrive\\Desktop\\FY MSC SEm 1\\MST 506\\RDK.xlsx")
+
+```

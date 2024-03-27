@@ -1,0 +1,97 @@
+---
+4kyutitle: "Use ofthe dplyr Package"
+author: "Harshal Marathe"
+date: "2023-08-12"
+output: word_document
+---
+#
+```{r}
+rm=list(ls)
+#install.packages("dyplr")
+library("dplyr")
+#or
+#install.packages("tydiverse")
+#library("dplyr")
+#data.frame
+Manager <- c(1:5)
+date <- c("10/24/08","10/28/08","10/01/08","10/12/08","05/01/09")
+Country <- c("US","US","UK","UK","UK")
+Gender <- c("M","F","F","M","F")
+Age <- c(32,45,25,39,99)
+q1 <- c(5,3,3,3,2)
+q2 <- c(4,5,5,3,2)
+q3 <- c(5,2,5,4,1)
+q4 <- c(5,5,5,NA,2)
+q5 <- c(5,5,2,NA,1)
+#a)
+Employee <- data.frame(Manager,date,Country,Gender,Age,q1,q2,q3,q4,q5)
+Employee
+#b)
+new_data <- mutate(Employee,total_score=q1+q2+q3+q4+q5,mean_score=(q1+q2+q3+q4+q5)/5)
+new_data
+head(new_data,n=3)
+#c)
+recoded_gender <- recode(new_data$Gender,"M"="Male","F"="Female")
+recoded_gender
+
+#using pipe operator
+#new_gender <- new_data$gender%>%recode("M"="Male","F"="Female")
+#new_gender
+
+#d)
+new_data <- rename(new_data,ID="Manager",Sex="Gender")
+print(new_data)
+#e)
+new_data%>%arrange(Sex,total_score)
+new_data
+#f)
+new_data%>%dplyr::select(ID,mean_score)
+print(new_data)
+#g)
+new_data%>%filter(Gender=="M" & total_score>10)
+```
+##Q2
+
+```{r}
+rm(list=ls())
+#install.packages("tidyverse")
+#install.packages("dplyr")
+library(dplyr)
+library(MASS)
+data("mtcars")
+View(mtcars)
+head(mtcars,n=10)
+tail(mtcars)
+#a)
+filtered_hp <- mtcars%>%filter(hp>100)%>%arrange(desc(mpg))
+filtered_hp
+#b)
+#mtcars %>% select(mpg,hp,qsec)
+mtcars %>% dplyr::select(mpg,hp,qsec)
+#c)
+DPC_1 <- mtcars%>%mutate(DPC=disp/cyl)
+DPC_1
+#d)
+mgp_group <- mtcars%>%group_by(mpg)%>%summarize(mean_mpg=mean(mpg),sd_mpg=sd(mpg))
+mgp_group
+#e)
+cyl_group <- mtcars%>%group_by(cyl) %>% summarize(mean_mpg=mean(mpg),mean_hp=mean(hp))
+cyl_group
+#f)
+mpg_filter <- mtcars %>% filter(mpg>20) %>% arrange(desc(hp)) %>% dplyr::select(mpg,hp,qsec)
+mpg_filter
+#g)
+mpg_cat <- mtcars %>% mutate(mpg_category=ifelse(mpg>25,"High","low"))
+mpg_cat
+# %>% group_by(mpg_category) %>% summarize(mean(mpg))
+#h)
+scl_1=mtcars %>% mutate(scale_mpg=scale(mpg))
+scl_1
+#i)
+ren <- mtcars %>% rename(MilesperGallon="mpg",Horsepower="hp",QuaterMileTime="qsec")
+ren
+#j)
+recoded_am <- recode(mtcars$am,"0"="Automatic","1"="Mannual")
+recoded_am
+mtcars %>% mutate(Trans=recode(am,'0'="Automatic",'1'="Mannual"))
+```

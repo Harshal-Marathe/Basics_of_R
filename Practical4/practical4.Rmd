@@ -1,0 +1,139 @@
+---
+title: "Practical 4"
+author: "Harshal Maratthe"
+date: "2023-09-01"
+output: word_document
+---
+```{r}
+rm(list=ls())
+#1)
+grades=c("A","D","C","D","C","C","C","C","F","B")
+table(grades)
+xtabs(~grades)
+#relative Frequency 
+prop.table(table(grades))
+table(grades)/length(grades)
+```
+```{r}
+#2
+library(MASS)
+View=quine
+table(quine$Age)
+with(data=quine,table(Age))
+```
+```{r}
+#3
+barplot(table(grades),xlab = "Grades",ylab = "Frequency",col ="PINK")
+barplot(prop.table(table(grades)),xlab = "Grades",ylab = "Relative Frequency",col = "PURPLE")
+dotchart(table(grades),xlab = "Grades",ylab = "Frequency")
+dotchart(prop.table(table(grades)),ylab = "Grades",xlab = "Relative Frequency",color = "BLUE")
+pie(table(grades))
+#for quine$age
+
+barplot(table(quine$Age),col="RED")
+dotchart(table(quine$Age))
+pie(table(quine$Age))
+mtext("Age of the students",side=1)
+```
+```{r}
+#4
+#install.packages("PASWR")
+library("PASWR")
+View(Baberuth)
+
+
+hr_nya <- Baberuth$HR[Baberuth$Team=="NY-A"]
+hr_nya
+#stem and leaf plot
+stem(hr_nya)
+
+#strip chart 
+stripchart(hr_nya)
+
+#histogram
+bin <- seq(20,70,10)
+hist(hr_nya,breaks=bin,col =hr_nya)
+
+```
+
+```{r}
+
+##5
+rm(list=ls())
+library("MASS")
+#View(geyser)
+dim(geyser)
+with(data=geyser,hist(waiting,freq=F,col=waiting))
+#TO superimpose kernel density estimate over histogram
+with(data=geyser,lines(density(waiting),col="RED",lwd=2))
+
+with(data=geyser,plot(density(waiting),col="RED",lwd=2))
+#OR
+plot(density(geyser$waiting),
+     main="Kernel Density of waiting")
+
+```
+
+```{r}
+##6
+library("MASS")
+#View(Cars93)
+with(data=Cars93,boxplot(Min.Price,col="YELLOW",notch=TRUE,horizontal=T,main="Boxplot of Min.Price" ))
+
+identify(as.numeric(Cars93$Manufacturer))
+```
+```{r}
+##7
+library("MASS")
+with(data=cats,boxplot(Hwt~Sex,col="GREEN",notch=T,horizontal=T,main="Sexwise Boxplot for the vaiable hwt" ))
+
+```
+
+```{r}
+##8
+library("MASS")
+with(data=Animals,plot(body,brain))
+#after log transformation
+with(data=Animals,plot(body,brain,log="xy"))
+with(data=Animals,identify(body,brain,log="xy",labels=row.names(Animals)))
+
+#range
+range(Animals$body)
+range(Animals$brain)
+x=range(log(Animals$body))
+y=range(log(Animals$brain))
+cor(Animals$body,Animals$brain)
+cor(x,y)
+```
+
+```{r}
+library("ISLR2")
+#View(Auto)
+#is.na(Auto)
+sum(is.na(Auto))
+#a)
+str(Auto)
+#b)
+summary(Auto)
+sapply
+sapply(Auto[,1:7],range)
+#c)
+sapply(Auto[,1:7],mean)
+sapply(Auto[,1:7],sd)
+#d)
+reduced.auto=Auto[-c(10:84),1:7]
+sum(is.na(reduced.auto))
+sapply(reduced.auto[,1:7],range)
+sapply(reduced.auto[,1:7],mean)
+sapply(reduced.auto[,1:7],sd)
+
+#e)
+plot(Auto[,1:7])
+pairs(Auto[,1:7])
+plot(Auto$mpg,Auto$cylinders)
+barplot(xtabs(~Auto$origin))
+
+#f
+cor(Auto[,1:7])
+
+```

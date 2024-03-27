@@ -1,0 +1,175 @@
+---
+title: "Practical 9"
+author: "Harshal Marathe"
+date: "2023-11-25"
+output:
+  word_document: default
+  html_document: default
+---
+```{r}
+#Q1
+#function to define the equation
+f <- function(x){
+  return(x^3-2*x-5)
+}
+#Bisection Method
+bisection <- function(f,a,b,tol=1e-6){
+  iter <- 1
+  while((b-a)>tol){
+    c <- (a+b)/2
+    if(f(c)==0){
+      break
+    }else if (f(c)*f(a)<0){
+      b <- c
+    }else{
+      a <- c
+    }
+    iter <- iter+1
+  }
+  root <- (a+b)/2
+  return(root)
+}
+#initial interval[a,b]
+a <- 1;b <- 3;
+
+#initial solution 
+x0=5
+root <- bisection(f,1,3)
+#print the result
+cat("the root of the equation x^2-4x-7=0 with initial interval a=",a," and b=",b," is ",root)
+```
+
+
+```{r}
+#Q2
+f <- function(x){
+  return(x^2- 4*x -7)
+}
+#derivative of the function
+f_1 <- function(x){
+  return(2*x-4)
+}
+#Newton Raphson method function
+newton_raphson <- function(f,f_1,x0,tol=1e-6){
+  iter <- 1
+  x <- x0
+  while(abs(f(x))>tol){
+    x=x-f(x)/f_1(x)
+    iter <- iter+1
+  }
+  return(x)
+}
+#Initial solution
+x0=5
+
+#call the Newton-Raphson method function
+root <- newton_raphson(f,f_1,x0)
+
+cat("the root of the equation x^2 - 4x -7 = 0 with initial solution x=",x0,"is :",root,"\n")
+```
+
+
+```{r}
+#Q3
+lagrange_interpolation <- function(x,x_val, y_val) {
+  n <- length(x_val)
+  result <- 0
+  
+  for (i in 1:n) {
+    term <- y_val[i]
+    for (j in 1:n) {
+      if (j != i) {
+        term <- term * (x - x_val[j]) / (x_val[i] - x_val[j])
+      }
+    }
+    result <- result + term
+  }
+  
+  return(result)
+}
+
+# Example usage:
+# Given points (x, y)
+x <- c(5,7,11,13)
+y <- c(150,392,1452,2366)
+
+# Point at which to interpolate
+interpolation_point <- 9
+
+# Calculate the interpolated value at the specified point
+result <- lagrange_interpolation(interpolation_point,x, y)
+# Print the result
+cat("Interpolated value at x =", interpolation_point, "is", result, "\n")
+```
+```{r}
+#Q4
+A=matrix(c(4,1,1,1,5,2,1,2,3),nrow=3,byrow=T)
+b=matrix(c(2,-6,-4,nrow=3))
+x0=c(0,0,0)
+x1=c(0,0,0)
+err=1
+while(err>0.00001)
+{
+  x1[1]=(b[1]-A[1,2]*x0[2]-A[1,3]*x0[3])/A[1,1]
+  x1[2]=(b[2]-A[2,1]*x0[1]-A[2,3]*x0[3])/A[2,2]
+  x1[3]=(b[3]-A[3,1]*x0[1]-A[3,2]*x0[2])/A[3,3]
+  err=max(abs(x0-x1))
+  x0=x1
+  print(x0)
+}
+x0
+```
+
+
+
+
+
+```{r}
+#Q5
+# Function to integrate
+f <- function(x) {1/(1 + x)}
+# Trapezoidal rule for definite integral
+trapezoidal_rule <- function(f, a, b, n) {
+  h <- (b - a)/n
+  x <- seq(a, b, length.out = n + 1)
+  result <- (h/2) * (f(a) + 2 * sum(f(x[2:n])) + f(b))
+  return(result)
+}
+# Define the limits of integration
+a <- 0 ;b <- 1
+# Number of subintervals
+n_values <- c(2, 4, 8)
+# Evaluate the integral for different numbers of subintervals
+for (n in n_values) {
+  result <- trapezoidal_rule(f, a, b, n)
+  cat("With", n, "subintervals, the result is:", result, "\n")
+}
+
+
+```
+```{r}
+#Q6
+f=function(x){return(1/(1+x))}
+a=0;b=1;n=8;h=(b-a)/n
+x=seq(a,b,h)
+y=f(x)
+#print(y)
+s1=y[1]+y[n+1]
+s1=s1+4*sum(y[seq(2,n,2)])+2*sum(y[seq(3,n,2)])
+s1*h/3
+
+
+```
+
+```{r}
+#Q7
+# Simpson’s 3/8th Rule
+f=function(x){return(1/(1+x))}
+a=0;b=1;n=6;h=(b-a)/n
+x=seq(a,b,h)
+y=f(x)
+s1=y[1]+y[n+1]
+s1=s1+3*sum(y[seq(2,n)])-sum(y[seq(4,n,3)])
+s1*3*h/8
+```
+
